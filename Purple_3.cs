@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,7 +51,7 @@ namespace Lab_6
                     return score;
                 }
             }
-            public int HighestPlace
+            private int HighestPlace
             {
                 get
                 {
@@ -67,7 +67,7 @@ namespace Lab_6
                     return highestPlace;
                 }
             }
-            public double MarksSum
+            private double MarksSum
             {
                 get
                 {
@@ -106,16 +106,20 @@ namespace Lab_6
                 if (participants == null) { return; }
                 for (int i = 0; i < 7; ++i)
                 {
-                    Participant[] array = (from participant in participants
-                                           orderby participant.Marks[i] descending
-                                           orderby participant.Places[participant.Places.Length - 1] ascending
-                                           select participant).ToArray();
-                    Array.Copy(array, participants, participants.Length);
+                    Participant[] arr = participants
+                                           .OrderByDescending (p => p.Marks[i])
+                                           .ThenBy (p => p.Places[p.Places.Length - 1])
+                                           .ToArray();
+                    Array.Copy(arr, participants, participants.Length);
                     for (int j = 1; j <= participants.Length; ++j)
                     {
                         participants[j - 1]._places[i] = j;
                     }
                 }
+                Participant[] array = participants
+                                           .OrderBy (p => p.Places[p.Places.Length - 1])
+                                           .ToArray();
+                Array.Copy(array, participants, array.Length);
             }
             public static void Sort(Participant[] array)
             {
