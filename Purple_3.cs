@@ -67,7 +67,7 @@ namespace Lab_6
                     return highestPlace;
                 }
             }
-            public double MarksSum
+            private double MarksSum
             {
                 get
                 {
