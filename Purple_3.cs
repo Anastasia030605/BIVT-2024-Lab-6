@@ -51,7 +51,7 @@ namespace Lab_6
                     return score;
                 }
             }
-            private int HighestPlace
+            public int HighestPlace
             {
                 get
                 {
@@ -67,7 +67,7 @@ namespace Lab_6
                     return highestPlace;
                 }
             }
-            private double MarksSum
+            public double MarksSum
             {
                 get
                 {
@@ -107,17 +107,18 @@ namespace Lab_6
                 for (int i = 0; i < 7; ++i)
                 {
                     Participant[] arr = participants
-                                           .OrderByDescending (p => p.Marks[i])
-                                           .ThenBy (p => p.Places[p.Places.Length - 1])
+                                           .OrderByDescending(p => p.Marks != null && i < p.Marks.Length ? p.Marks[i] : int.MinValue)
+                                           .ThenBy(p => p.Places != null && p.Places.Length > 0 ? p.Places[p.Places.Length - 1] : int.MaxValue)
                                            .ToArray();
                     Array.Copy(arr, participants, participants.Length);
                     for (int j = 1; j <= participants.Length; ++j)
                     {
+                        if (participants[j - 1]._places == null) { continue; }
                         participants[j - 1]._places[i] = j;
                     }
                 }
                 Participant[] array = participants
-                                           .OrderBy (p => p.Places[p.Places.Length - 1])
+                                           .OrderBy(p => p.Places != null && p.Places.Length > 0 ? p.Places[p.Places.Length - 1] : int.MaxValue)
                                            .ToArray();
                 Array.Copy(array, participants, array.Length);
             }
@@ -125,7 +126,7 @@ namespace Lab_6
             {
                 if (array == null) { return; }
 
-                Participant[] arr =   array
+                Participant[] arr = array
                          .OrderBy(participant => participant.Score)
                          .ThenBy(participant => participant.HighestPlace)
                          .ThenByDescending(participant => participant.MarksSum)
