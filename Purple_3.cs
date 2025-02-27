@@ -51,7 +51,7 @@ namespace Lab_6
                     return score;
                 }
             }
-            public int HighestPlace
+            private int HighestPlace
             {
                 get
                 {
