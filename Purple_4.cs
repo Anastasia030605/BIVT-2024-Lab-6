@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +13,7 @@ namespace Lab_6
             private string _name;
             private string _surname;
             private double _time;
+            private bool _timeSet;
 
             public string Name { get { return _name; } }
             public string Surname { get { return _surname; } }
@@ -22,14 +23,16 @@ namespace Lab_6
             {
                 _name = name;
                 _surname = surname;
-                _time = -1;
+                _time = 0;
+                _timeSet = false;
             }
 
             public void Run(double time)
             {
-                if (_time == -1 && time > 0)
+                if (!_timeSet)
                 {
                     _time = time;
+                    _timeSet = true;
                 }
             }
             public void Print() { }
@@ -94,6 +97,7 @@ namespace Lab_6
             
             public void Sort()
             {
+                if (_sportsmen == null) { return; }
                 Sportsman[] newArray = _sportsmen
                     .OrderBy(sportsman => sportsman.Time)
                     .ToArray();
@@ -124,12 +128,12 @@ namespace Lab_6
                     {
                         if(i < gr1.Length)
                         {
-                            Array.ConstrainedCopy(gr1, i, merged._sportsmen, i + j, gr1.Length - i - 1);
+                            Array.ConstrainedCopy(gr1, i, merged._sportsmen, i + j, gr1.Length - i);
                             i = gr1.Length;
                         }
                         if(j < gr2.Length)
                         {
-                            Array.ConstrainedCopy(gr2, j, merged._sportsmen, i + j, gr2.Length - j - 1);
+                            Array.ConstrainedCopy(gr2, j, merged._sportsmen, i + j, gr2.Length - j);
                             j = gr2.Length;
                         }
                     }
