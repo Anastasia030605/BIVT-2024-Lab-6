@@ -34,7 +34,8 @@ namespace Lab_6
                 int count = 0;
                 foreach (Response response in responses)
                 {
-                    var resp = response._response;
+                   if(response._response == null) { continue;  }
+                   var resp = response._response;
                    if(resp.Length >= questionNumber && resp[questionNumber - 1] != null) { count++; }
                 }
                 return count;
