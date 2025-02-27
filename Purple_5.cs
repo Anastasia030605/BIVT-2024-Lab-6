@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -14,7 +14,7 @@ namespace Lab_6
             private string _animal;
             private string _characterTrait;
             private string _concept;
-            private string _response;
+            private string[] _response;
 
             public string Animal { get { return _animal; } }
             public string CharacterTrait { get { return _characterTrait; } }
@@ -25,7 +25,7 @@ namespace Lab_6
                 _animal = animal;
                 _characterTrait = characterTrait;
                 _concept = concept;
-                _response = (animal + " " + characterTrait + " " + concept); //сработает корректно даже если что-то null т.к. при конкатенации null преобразуется в ""
+                _response = new string[] {animal, characterTrait, concept};
             }
 
             public int CountVotes(Response[] responses, int questionNumber)
@@ -34,13 +34,14 @@ namespace Lab_6
                 int count = 0;
                 foreach (Response response in responses)
                 {
-                   if(response._response.Split(' ')[questionNumber - 1] != "") { count++; }
+                    var resp = response._response;
+                   if(resp.Length >= questionNumber && resp[questionNumber - 1] != null) { count++; }
                 }
                 return count;
             }
             public void Print() 
             {
-                Console.WriteLine(_response);
+                Console.WriteLine(_animal + " " + _characterTrait +" " + _concept);
             }
         }
 
@@ -63,10 +64,10 @@ namespace Lab_6
                 if (answers == null || _responses == null) { return; }
                 Response[] newArray = new Response[_responses.Length + 1];
                 Array.Copy(_responses, newArray, _responses.Length);
-                string[] resp = new string[] {"", "", ""};
+                string[] resp = new string[] {null, null, null};
                 for(int i = 0; i < Math.Min(answers.Length, 3); ++i)
                 {
-                    resp[i] += answers[i]; 
+                    resp[i] = answers[i]; 
                 }
                 Response answer = new Response(resp[0], resp[1], resp[2]);
                 newArray[newArray.Length - 1] = answer;
@@ -83,7 +84,7 @@ namespace Lab_6
                 {
                     string[] arr = { response.Animal, response.CharacterTrait, response.Concept };
                     string resp = arr[question - 1];
-                    if(resp == "") { continue; }
+                    if(resp == null || resp == "") { continue; }
                     int find = Array.IndexOf(answers, resp);
                     if (find == -1) 
                     {
