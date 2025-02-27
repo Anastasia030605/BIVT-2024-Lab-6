@@ -95,10 +95,14 @@ namespace Lab_6
                         counts[find]++;
                     }
                 }
-                Array.Sort(counts, answers);
+                var zipped = counts.Select((count, index) => new { Count = count, Answer = answers[index] })
+                   .OrderByDescending(pair => pair.Count)
+                   .ToArray();
+                counts = zipped.Select(pair => pair.Count).ToArray();
+                answers = zipped.Select(pair => pair.Answer).ToArray();
                 string[] result = new string[Math.Min(currEmptyInd, 5)];
                 int cur = 0;
-                for (int i = answers.Length - 1; i >= answers.Length - result.Length; --i) {
+                for (int i = 0; i < result.Length; ++i) {
                     result[cur++] = answers[i];
                 }
                 return result;
